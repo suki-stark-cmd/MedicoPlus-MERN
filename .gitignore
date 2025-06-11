@@ -1,0 +1,21 @@
+# Ignore node_modules
+**/node_modules/
+
+# Environment files
+**/.env
+
+# Build files
+**/dist/
+**/build/
+
+# IDE / OS-specific files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Vercel/Netlify
+.vercel
+.netlify
