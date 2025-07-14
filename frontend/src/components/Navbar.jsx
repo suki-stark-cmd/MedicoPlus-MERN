@@ -17,7 +17,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className='w-full flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD] bg-gradient-to-r from-blue-200 via-white to-blue-100 shadow-md rounded-b-xl animate-fadeIn'>
+    <nav className='w-full flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD] bg-gradient-to-br from-blue-200 to-blue-300  rounded-b-xl animate-fadeIn'>
       <img onClick={() => navigate('/')} className='w-44 cursor-pointer transition-transform duration-300 hover:scale-105' src={assets.logo} alt="" />
       <ul className='md:flex items-start gap-12 font-semibold hidden ml-[-40px]'>
         <NavLink to='/' className={({ isActive }) => isActive ? 'text-blue-600' : 'text-gray-700'}>
@@ -25,6 +25,9 @@ const Navbar = () => {
         </NavLink>
         <NavLink to='/doctors' className={({ isActive }) => isActive ? 'text-blue-600' : 'text-gray-700'}>
           <li className='flex items-center gap-4 py-1 hover:text-blue-500 transition-colors'><FaUserMd /> ALL DOCTORS</li>
+        </NavLink>
+        <NavLink to='/services' className={({ isActive }) => isActive ? 'text-blue-600' : 'text-gray-700'}>
+          <li className='flex items-center gap-4 py-1 hover:text-blue-500 transition-colors'><FaInfoCircle /> SERVICES</li>
         </NavLink>
         <NavLink to='/about' className={({ isActive }) => isActive ? 'text-blue-600' : 'text-gray-700'}>
           <li className='flex items-center gap-4 py-1 hover:text-blue-500 transition-colors'><FaInfoCircle /> ABOUT</li>
@@ -72,6 +75,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink onClick={() => setShowMenu(false)} to='/doctors' className='w-full'>
               <p className='flex items-center gap-2 px-4 py-2 rounded-full hover:bg-blue-50 transition-colors'><FaUserMd /> ALL DOCTORS</p>
+            </NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to='/services' className='w-full'>
+              <p className='flex items-center gap-2 px-4 py-2 rounded-full hover:bg-blue-50 transition-colors'><FaInfoCircle /> SERVICES</p>
             </NavLink>
             <NavLink onClick={() => setShowMenu(false)} to='/about' className='w-full'>
               <p className='flex items-center gap-2 px-4 py-2 rounded-full hover:bg-blue-50 transition-colors'><FaInfoCircle /> ABOUT</p>

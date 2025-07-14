@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
+import { FaUser, FaPhone, FaMapMarkerAlt, FaVenusMars, FaBirthdayCake, FaEnvelope, FaEdit, FaSave } from 'react-icons/fa'
 
 const MyProfile = () => {
 
@@ -48,83 +49,104 @@ const MyProfile = () => {
     }
 
     return userData ? (
-        <div className='max-w-lg flex flex-col gap-4 text-sm pt-8 mx-auto bg-white rounded-xl shadow-lg p-8'>
-            <div className='flex flex-col items-center gap-2'>
-                {isEdit
-                    ? <label htmlFor='image'>
-                        <div className='relative cursor-pointer w-36 h-36 rounded-full overflow-hidden border-4 border-primary shadow-md bg-gray-100 flex items-center justify-center'>
+
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-blue-300 rounded-2xl py-10">
+            <div className="backdrop-blur-lg bg-white/70 shadow-2xl rounded-3xl p-8 max-w-xl w-full flex flex-col items-center gap-6 border-blue-200">
+                {/* Profile Image */}
+                <div className="relative w-36 h-36 rounded-full overflow-hidden border-2 border-white-100 shadow-lg bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
+                    {isEdit ? (
+                        <label htmlFor="image" className="absolute inset-0 cursor-pointer group flex items-center justify-center">
                             <img
-                                className='w-full h-full object-cover object-center'
+                                className="w-full h-full object-cover object-center"
                                 src={image ? URL.createObjectURL(image) : userData.image}
                                 alt="Profile"
                                 style={{ aspectRatio: '1/1' }}
                             />
-                            <img className='w-10 absolute bottom-2 right-2 bg-white rounded-full p-1 border border-gray-200' src={image ? '' : assets.upload_icon} alt="Upload" />
-                        </div>
-                        <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden accept="image/*" />
-                    </label>
-                    : <div className='w-36 h-36 rounded-full overflow-hidden border-4 border-primary shadow-md bg-gray-100 flex items-center justify-center'>
+                            <div className="absolute inset-0 bg-blue-900/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                <FaEdit className="text-white text-3xl" />
+                            </div>
+                            <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden accept="image/*" />
+                        </label>
+                    ) : (
                         <img
-                            className='w-full h-full object-cover object-center'
+                            className="w-full h-full object-cover object-center"
                             src={userData.image}
                             alt="Profile"
                             style={{ aspectRatio: '1/1' }}
                         />
+                    )}
+                </div>
+                {/* Name */}
+                {isEdit ? (
+                    <input className="bg-white/80 border-b-2 border-blue-400 text-3xl font-bold text-center py-2 px-4 rounded-lg focus:outline-none focus:border-blue-700 transition-all w-full max-w-xs shadow" type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData.name} />
+                ) : (
+                    <p className="font-extrabold text-3xl text-blue-900 mt-2 flex items-center gap-2"><FaUser className="text-blue-400" />{userData.name}</p>
+                )}
+                {/* Contact Info */}
+                <div className="w-full flex flex-col gap-4 mt-4">
+                    <h2 className="text-lg font-bold text-blue-700 flex items-center gap-2"><FaEnvelope className="text-blue-400" />Contact Information</h2>
+                    <div className="flex flex-col gap-2 bg-white/60 rounded-xl p-4 shadow">
+                        <div className="flex items-center gap-2 text-blue-900"><FaEnvelope className="text-blue-400" /><span className="font-medium">{userData.email}</span></div>
+                        <div className="flex items-center gap-2 text-blue-900">
+                            <FaPhone className="text-blue-400" />
+                            {isEdit ? (
+                                <input className="bg-white/80 border-b-2 border-blue-200 px-2 py-1 rounded focus:outline-none focus:border-blue-500 transition-all w-full max-w-xs" type="text" onChange={(e) => setUserData(prev => ({ ...prev, phone: e.target.value }))} value={userData.phone} />
+                            ) : (
+                                <span className="font-medium">{userData.phone}</span>
+                            )}
+                        </div>
+                        <div className="flex items-start gap-2 text-blue-900">
+                            <FaMapMarkerAlt className="text-blue-400 mt-1" />
+                            {isEdit ? (
+                                <div className="flex flex-col gap-1 w-full">
+                                    <input className="bg-white/80 border-b-2 border-blue-200 px-2 py-1 rounded focus:outline-none focus:border-blue-500 transition-all" type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address.line1} placeholder="Address line 1" />
+                                    <input className="bg-white/80 border-b-2 border-blue-200 px-2 py-1 rounded focus:outline-none focus:border-blue-500 transition-all" type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address.line2} placeholder="Address line 2" />
+                                </div>
+                            ) : (
+                                <span className="font-medium">{userData.address.line1}<br />{userData.address.line2}</span>
+                            )}
+                        </div>
                     </div>
-                }
-                {isEdit
-                    ? <input className='bg-gray-50 text-3xl font-medium max-w-60 text-center mt-2' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData.name} />
-                    : <p className='font-semibold text-3xl text-[#262626] mt-4'>{userData.name}</p>
-                }
-            </div>
-            <hr className='bg-[#ADADAD] h-[1px] border-none my-2' />
-            <div>
-                <p className='text-gray-600 underline mt-3 font-semibold'>CONTACT INFORMATION</p>
-                <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]'>
-                    <p className='font-medium'>Email id:</p>
-                    <p className='text-blue-500 break-all'>{userData.email}</p>
-                    <p className='font-medium'>Phone:</p>
-                    {isEdit
-                        ? <input className='bg-gray-50 max-w-52' type="text" onChange={(e) => setUserData(prev => ({ ...prev, phone: e.target.value }))} value={userData.phone} />
-                        : <p className='text-blue-500'>{userData.phone}</p>
-                    }
-                    <p className='font-medium'>Address:</p>
-                    {isEdit
-                        ? <p>
-                            <input className='bg-gray-50 mb-1' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address.line1} />
-                            <br />
-                            <input className='bg-gray-50' type="text" onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address.line2} /></p>
-                        : <p className='text-gray-500'>{userData.address.line1} <br /> {userData.address.line2}</p>
-                    }
                 </div>
-            </div>
-            <div>
-                <p className='text-[#797979] underline mt-3 font-semibold'>BASIC INFORMATION</p>
-                <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-gray-600'>
-                    <p className='font-medium'>Gender:</p>
-                    {isEdit
-                        ? <select className='max-w-20 bg-gray-50' onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))} value={userData.gender} >
-                            <option value="Not Selected">Not Selected</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                        : <p className='text-gray-500'>{userData.gender}</p>
-                    }
-                    <p className='font-medium'>Birthday:</p>
-                    {isEdit
-                        ? <input className='max-w-28 bg-gray-50' type='date' onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dob} />
-                        : <p className='text-gray-500'>{userData.dob}</p>
-                    }
+                {/* Basic Info */}
+                <div className="w-full flex flex-col gap-4 mt-4">
+                    <h2 className="text-lg font-bold text-blue-700 flex items-center gap-2"><FaVenusMars className="text-blue-400" />Basic Information</h2>
+                    <div className="flex flex-col gap-2 bg-white/60 rounded-xl p-4 shadow">
+                        <div className="flex items-center gap-2 text-blue-900">
+                            <FaVenusMars className="text-blue-400" />
+                            {isEdit ? (
+                                <select className="bg-white/80 border-b-2 border-blue-200 px-2 py-1 rounded focus:outline-none focus:border-blue-500 transition-all max-w-xs" onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))} value={userData.gender} >
+                                    <option value="Not Selected">Not Selected</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            ) : (
+                                <span className="font-medium">{userData.gender}</span>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-2 text-blue-900">
+                            <FaBirthdayCake className="text-blue-400" />
+                            {isEdit ? (
+                                <input className="bg-white/80 border-b-2 border-blue-200 px-2 py-1 rounded focus:outline-none focus:border-blue-500 transition-all max-w-xs" type='date' onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dob} />
+                            ) : (
+                                <span className="font-medium">{userData.dob}</span>
+                            )}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className='mt-10 flex justify-center'>
-                {isEdit
-                    ? <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all flex items-center justify-center min-w-[150px]' disabled={loading}>
-                        {loading && <svg className="animate-spin h-5 w-5 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>}
-                        {loading ? 'Saving...' : 'Save information'}
-                    </button>
-                    : <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>Edit</button>
-                }
+                {/* Action Button */}
+                <div className="mt-8 flex justify-center w-full">
+                    {isEdit ? (
+                        <button onClick={updateUserProfileData} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all min-w-[160px] border-2 border-blue-700 focus:scale-95 active:scale-95" disabled={loading}>
+                            {loading && <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>}
+                            <FaSave /> {loading ? 'Saving...' : 'Save information'}
+                        </button>
+                    ) : (
+                        <button onClick={() => setIsEdit(true)} className="flex items-center gap-2  bg-blue-400 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all min-w-[160px] border-1 border-blue-700 focus:scale-95 active:scale-95">
+                            <FaEdit /> Edit
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     ) : null
