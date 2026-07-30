@@ -14,80 +14,102 @@ const MyProfile = () => {
     },
     gender: 'Male',
     dob: '2004-09-18'
-
   })
 
   const [isEdit, setIsEdit] = useState(false)
 
-
   return (
-    <div className='max-w-lg flex flex-col gap-2 text-sm'>
-      <img className='w-36 rounded' src={userData.image} alt="" />
+    <div className='page-wrapper py-6 max-w-2xl'>
+      <div className='glass-card-static p-8 animate-fadeInUp'>
 
-      {
-        isEdit
-          ? <input className='bg-gray-50 text-3xl font-medium max-w-60 mt-4' type="text" value={userData.name} onChange={e => setUserData(prev => ({ ...prev, name: e.target.value }))} />
-          : <p className='font-medium text-3xl text-neutral-800 mt-4'>{userData.name}</p>
-
-      }
-      <hr className='bg-zinc-400 h-[1px] border-none'/>
-      <div>
-        <p className='text-neutral-500 underline mt-3'>CONTACT INFORMATION</p>
-        <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700'>
-          <p className='font-medium'>Email id:</p>
-          <p className='text-blue-500'>{userData.email}</p>
-          <p className='font-medium'>Phone:</p>
-          {
-            isEdit
-              ? <input className='bg-gray-100 max-w-52' type="text" value={userData.phone} onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))} />
-              : <p className='text-blue-400'>{userData.phone}</p>
-          }
-          <p className='font-medium'>Address:</p>
-          {
-            isEdit
-              ? <p>
-                <input className='bg-gray-50' onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address.line1} type="text" />
-                <br />
-                <input className='bg-gray-50' onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address.line2} type="text" />
-              </p>
-              : <p className='text-gray-500'>
-                {userData.address.line1}
-                <br />
-                {userData.address.line2}
-              </p>
-          }
+        {/* Avatar Section */}
+        <div className='flex items-center gap-6 mb-8'>
+          <div className='relative'>
+            <div className='w-24 h-24 rounded-full overflow-hidden border-3 border-emerald-500/50 p-0.5' style={{ background: 'linear-gradient(135deg, #10b981, #14b8a6)' }}>
+              <img className='w-full h-full rounded-full object-cover' src={userData.image} alt="Profile" />
+            </div>
+            {isEdit && (
+              <div className='absolute bottom-0 right-0 w-7 h-7 bg-emerald-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-emerald-400 transition-colors'>
+                <svg className='w-3.5 h-3.5 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' /></svg>
+              </div>
+            )}
+          </div>
+          <div>
+            {isEdit
+              ? <input className='input-dark text-xl font-bold max-w-60' type="text" value={userData.name} onChange={e => setUserData(prev => ({ ...prev, name: e.target.value }))} />
+              : <h2 className='text-2xl font-bold text-white' style={{ fontFamily: 'Inter, sans-serif' }}>{userData.name}</h2>
+            }
+            <p className='text-slate-400 text-sm mt-1'>Patient Profile</p>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <p className='text-neutral-500 underline mt-3'>BASIC INFORMATION</p>
-        <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700'>
-          <p className='font-medium'>Gender:</p>
-          {
-            isEdit
-              ? <select className='max-w-20 bg-gray-100' onChange={(e) => (prev => ({ ...prev, gender: e.target.value }))} value={userData.gender}>
+        <div className='h-px bg-slate-700/50 mb-6'></div>
+
+        {/* Contact Information */}
+        <div className='mb-6'>
+          <h3 className='text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4'>Contact Information</h3>
+          <div className='grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-y-4 gap-x-4 text-sm'>
+            <p className='text-slate-400 font-medium'>Email:</p>
+            <p className='text-emerald-400'>{userData.email}</p>
+
+            <p className='text-slate-400 font-medium'>Phone:</p>
+            {isEdit
+              ? <input className='input-dark text-sm' type="text" value={userData.phone} onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))} />
+              : <p className='text-slate-300'>{userData.phone}</p>
+            }
+
+            <p className='text-slate-400 font-medium'>Address:</p>
+            {isEdit
+              ? <div className='flex flex-col gap-2'>
+                <input className='input-dark text-sm' onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={userData.address.line1} type="text" />
+                <input className='input-dark text-sm' onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={userData.address.line2} type="text" />
+              </div>
+              : <p className='text-slate-300'>{userData.address.line1}<br />{userData.address.line2}</p>
+            }
+          </div>
+        </div>
+
+        <div className='h-px bg-slate-700/50 mb-6'></div>
+
+        {/* Basic Information */}
+        <div className='mb-8'>
+          <h3 className='text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-4'>Basic Information</h3>
+          <div className='grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-y-4 gap-x-4 text-sm'>
+            <p className='text-slate-400 font-medium'>Gender:</p>
+            {isEdit
+              ? <select className='input-dark text-sm max-w-32' onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))} value={userData.gender}>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              : <p className='text-gray-400'>{userData.gender}</p>
-          }
-          <p className='font-medium'>BirthDay:</p>
-          {
-            isEdit
-            ? <input className='max-w-28 bg-gray-100' type="date" onChange={(e) => (prev => ({ ...prev, dob: e.target.value }))} value={userData.dob} />
-            : <p className='text-gray-400'>{userData.dob}</p>
-          }
+              : <p className='text-slate-300'>{userData.gender}</p>
+            }
+
+            <p className='text-slate-400 font-medium'>Birthday:</p>
+            {isEdit
+              ? <input className='input-dark text-sm max-w-40' type="date" onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} value={userData.dob} />
+              : <p className='text-slate-300'>{userData.dob}</p>
+            }
+          </div>
         </div>
 
-        <div className='mt-10'>
-          {
-            isEdit
-            ? <button className='border border-blue-500 px-8 py-2 rounded-full cursor-pointer hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={()=> setIsEdit(false)}>Save Information</button>
-            : <button className='border border-blue-500 px-8 py-2 rounded-full cursor-pointer hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={()=> setIsEdit(true)}>Edit</button>
+        {/* Action Button */}
+        <div className='flex gap-3'>
+          {isEdit
+            ? <>
+              <button className='gradient-btn px-8 py-2.5 text-sm' onClick={() => setIsEdit(false)}>
+                Save Changes
+              </button>
+              <button className='gradient-btn-outline px-6 py-2.5 text-sm' onClick={() => setIsEdit(false)}>
+                Cancel
+              </button>
+            </>
+            : <button className='gradient-btn-outline px-8 py-2.5 text-sm flex items-center gap-2' onClick={() => setIsEdit(true)}>
+              <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' /></svg>
+              Edit Profile
+            </button>
           }
         </div>
       </div>
-
     </div>
   )
 }
