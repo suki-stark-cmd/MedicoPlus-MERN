@@ -26,8 +26,8 @@ const About = () => {
             {/* Mission & Vision Showcase */}
             <div className='flex flex-col md:flex-row items-center gap-12 bg-white rounded-3xl p-8 sm:p-12 border border-slate-100 shadow-xl shadow-blue-500/5'>
                 <div className='w-full md:w-1/2 relative'>
-                    <div className='p-2 rounded-3xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-xl'>
-                        <img className='w-full h-auto rounded-2xl object-cover' src={assets.about_image} alt="About MedicoPlus" />
+                    <div className='p-2 rounded-3xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-xl overflow-hidden'>
+                        <img className='w-full h-80 sm:h-96 rounded-2xl object-cover' src={assets.about_banner || assets.about_image} alt="About MedicoPlus Team" />
                     </div>
                 </div>
 

@@ -34,7 +34,7 @@ const Contact = () => {
                 {/* Left Office Info Card */}
                 <div className='bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-blue-500/5 space-y-8'>
                     <div className='relative rounded-2xl overflow-hidden shadow-md max-h-64'>
-                        <img className='w-full h-64 object-cover' src={assets.contact_image} alt="Contact Clinic" />
+                        <img className='w-full h-64 object-cover' src={assets.contact_banner || assets.contact_image} alt="Contact Clinic Desk" />
                     </div>
 
                     <div className='space-y-6 text-sm text-slate-600'>

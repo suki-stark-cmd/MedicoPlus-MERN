@@ -71,8 +71,8 @@ const Header = () => {
                     {/* Hero Image Container */}
                     <div className='relative w-full max-w-md lg:max-w-lg rounded-3xl overflow-hidden pt-6'>
                         <img 
-                            className='w-full h-auto object-cover rounded-2xl drop-shadow-2xl transition-transform duration-700 hover:scale-102' 
-                            src={assets.header_img} 
+                            className='w-full h-auto object-cover rounded-2xl drop-shadow-2xl transition-transform duration-700 hover:scale-102 max-h-[460px]' 
+                            src={assets.hero_banner || assets.header_img} 
                             alt="Doctor Consultation" 
                         />
                     </div>
