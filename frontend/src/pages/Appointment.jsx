@@ -1,162 +1,160 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { AppContext } from '../context/AppContext'
 import { useParams } from 'react-router-dom'
 import { assets } from '../assets/assets'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import RelatedDoctors from '../components/RelatedDoctors'
 
 const Appointment = () => {
 
-  const { docId } = useParams()
-  const { doctors, currencySymbol } = useContext(AppContext)
+  const {docId} = useParams()
+  const {doctors, currencySymbol} = useContext(AppContext)
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
-  const [docInfo, setDocInfo] = useState(null)
+  const[docInfo, setDocInfo] = useState(null)
+
   const [docSlots, setDocSlots] = useState([])
   const [slotIndex, setSlotIndex] = useState(0)
   const [slottime, setSlotTime] = useState('')
 
-  const fetchDocInfo = async () => {
+  const fetchDocInfo = async () =>{
     const docInfo = doctors.find(doc => doc._id === docId)
     setDocInfo(docInfo)
   }
 
-  const getAvailableSlots = async () => {
+
+  const getAvilableSlots = async () => {
     setDocSlots([])
+
+    // getting current date
     let today = new Date()
 
-    for (let i = 0; i < 7; i++) {
+    for(let i = 0; i < 7; i++){
+      // getting date with index
       let currentDate = new Date(today)
       currentDate.setDate(today.getDate() + i)
 
+      // setting end time of the date with index
       let endTime = new Date()
       endTime.setDate(today.getDate() + i)
-      endTime.setHours(21, 0, 0, 0)
+      endTime.setHours(21,0,0,0)
 
+      // setting hours
       if (today.getDate() === currentDate.getDate()) {
         currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
         currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
-      } else {
+        
+      }else{
         currentDate.setHours(10)
         currentDate.setMinutes(0)
       }
 
       let timeSlots = []
-      while (currentDate < endTime) {
-        let formattedTime = currentDate.toLocaleString([], { hour: '2-digit', minute: '2-digit' })
+
+      while(currentDate < endTime) {
+        let formattedTime = currentDate.toLocaleString([], {hour: '2-digit', minute: '2-digit'})
+
+        // add slot to array
         timeSlots.push({
           datetime: new Date(currentDate),
           time: formattedTime
         })
+
+        // Increment the current time by 30 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 30)
       }
+
       setDocSlots(prev => ([...prev, timeSlots]))
+
     }
   }
 
   useEffect(() => {
     fetchDocInfo()
-  }, [doctors, docId])
+  },[doctors, docId])
+
+  useEffect(() =>{
+    getAvilableSlots()
+  },[docInfo])
 
   useEffect(() => {
-    getAvailableSlots()
-  }, [docInfo])
+    console.log(docSlots)
+  },[docSlots])
 
-  return docInfo && (
-    <div className='page-wrapper py-6'>
 
-      {/* Doctor Details */}
-      <div className='flex flex-col sm:flex-row gap-6 animate-fadeInUp'>
-        {/* Doctor Image */}
-        <div className='sm:w-72 flex-shrink-0'>
-          <div className='rounded-2xl overflow-hidden border border-slate-700/50' style={{ background: 'linear-gradient(135deg, #065f46, #0f766e)' }}>
-            <img className='w-full' src={docInfo.image} alt={docInfo.name} />
-          </div>
-        </div>
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -150, behavior: 'smooth' })
+  }
 
-        {/* Doctor Info */}
-        <div className='flex-1 glass-card-static p-6 sm:p-8'>
-          {/* Name & Verified */}
-          <div className='flex items-center gap-3'>
-            <h1 className='text-2xl sm:text-3xl font-bold text-white' style={{ fontFamily: 'Inter, sans-serif' }}>
-              {docInfo.name}
-            </h1>
-            <img className='w-5' src={assets.verified_icon} alt="Verified" />
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 150, behavior: 'smooth' })
+  }
+
+
+  return docInfo &&(
+      <div>
+
+        {/* --- Doctor Detials ---- */}
+        <div className='flex flex-col sm:flex-row gap-4'>
+          <div >
+            <img className='bg-blue-500 w-full sm:max-w-72 rounded-lg' src={docInfo.image} alt="" />
           </div>
 
-          {/* Degree & Experience */}
-          <div className='flex items-center gap-3 mt-2 flex-wrap'>
-            <span className='text-slate-300 text-sm'>{docInfo.degree} — {docInfo.speciality}</span>
-            <span className='py-1 px-3 text-xs rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'>
-              {docInfo.experience}
-            </span>
-          </div>
-
-          {/* About */}
-          <div className='mt-5'>
-            <p className='flex items-center gap-2 text-sm font-semibold text-white'>
-              About <img className='w-3.5 opacity-60' src={assets.info_icon} alt="" style={{ filter: 'invert(0.7)' }} />
+          <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
+            {/* ---- Doc Info : name, degree, experience ---- */}
+            <p className='flex items-center gap-2 text-2xl font-medium text-gray-900'>
+              {docInfo.name} 
+              <img className='w-5' src={assets.verified_icon} alt="" />
             </p>
-            <p className='text-sm text-slate-400 max-w-[700px] mt-2 leading-relaxed'>{docInfo.about}</p>
-          </div>
-
-          {/* Fee */}
-          <div className='mt-5 flex items-center gap-2'>
-            <span className='text-slate-400 text-sm'>Appointment fee:</span>
-            <span className='text-emerald-400 font-bold text-lg'>{currencySymbol}{docInfo.fees}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Booking Slots */}
-      <div className='sm:ml-[312px] mt-8 animate-fadeInUp stagger-2'>
-        <h3 className='text-lg font-semibold text-white mb-4' style={{ fontFamily: 'Inter, sans-serif' }}>
-          Booking <span className='gradient-text'>Slots</span>
-        </h3>
-
-        {/* Day Selector */}
-        <div className='flex gap-3 items-center w-full overflow-x-auto scrollbar-hide pb-2'>
-          {docSlots.length > 0 && docSlots.map((item, index) => (
-            <div
-              onClick={() => setSlotIndex(index)}
-              className={`text-center py-5 min-w-16 rounded-2xl cursor-pointer transition-all duration-300 flex-shrink-0 ${slotIndex === index
-                ? 'bg-gradient-to-b from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25'
-                : 'glass-card-static text-slate-400 hover:text-slate-200 hover:border-slate-600'
-                }`}
-              key={index}
-            >
-              <p className='text-xs font-medium'>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
-              <p className='text-lg font-bold mt-1'>{item[0] && item[0].datetime.getDate()}</p>
+            <div className='flex items-center gap-2 text-sm mt-1 text-gray-600'>
+              <p>{docInfo.degree} - {docInfo.speciality}</p>
+              <button className='py-0.5 px-2 border text-xs rounded-full'>{docInfo.experience}</button>
             </div>
-          ))}
-        </div>
 
-        {/* Time Slots */}
-        <div className='flex items-center gap-3 w-full overflow-x-auto scrollbar-hide mt-5 pb-2'>
-          {docSlots.length > 0 && docSlots[slotIndex].map((item, index) => (
-            <p
-              onClick={() => setSlotTime(item.time)}
-              className={`text-sm flex-shrink-0 px-5 py-2.5 rounded-full cursor-pointer transition-all duration-300 ${item.time === slottime
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20'
-                : 'glass-card-static text-slate-400 hover:text-slate-200 hover:border-slate-600'
-                }`}
-              key={index}
-            >
-              {item.time.toLowerCase()}
+            {/* ---- Doctor About ---- */}
+            <div>
+              <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
+                About <img src={assets.info_icon} alt="" />
+              </p>
+              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docInfo.about}</p>
+            </div>
+            <p className='text-gray-500 font-medium mt-4'>
+              Appointment fee: <span className='text-gray-600'>{currencySymbol}{docInfo.fees}</span>
             </p>
-          ))}
+          </div>
         </div>
 
-        {/* Book Button */}
-        <button className='gradient-btn mt-8 px-16 py-3.5 text-base font-semibold animate-pulseGlow'>
-          Book an Appointment
-        </button>
+        {/* ---- Booking Slots ---- */}
+
+        <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
+          <p>Booking slots</p>
+          <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
+            {
+              docSlots.length && docSlots.map((item, index) =>(
+                <div onClick={()=> setSlotIndex(index)} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-blue-500 text-white' : 'border border-gray-200'}`} key={index}>
+                  <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
+                  <p>{item[0] && item[0].datetime.getDate()}</p>
+                </div>
+              ))
+            }
+          </div>
+
+          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
+            {docSlots.length && docSlots[slotIndex].map((item, index)=> (
+              <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slottime ? 'bg-blue-500 text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
+                {item.time.toLowerCase()}
+              </p>
+            ))}
+          </div>
+          <button className='bg-blue-500 text-white text-sm font-light px-14 py-3 rounded-full my-6 cursor-pointer'>Book an Appointment</button>
+        </div>
+
+        {/* ---- Listing related Doctors ---- */}
+        <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
+
       </div>
+    )
+  }
 
-      {/* Related Doctors */}
-      <div className='section-divider mt-16'></div>
-      <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
-    </div>
-  )
-}
 
-export default Appointment
+  export default Appointment
