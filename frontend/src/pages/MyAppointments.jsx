@@ -1,38 +1,74 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
+import { Calendar, Clock, MapPin, CreditCard, XCircle, CheckCircle } from 'lucide-react'
 
 const MyAppointments = () => {
+    const { doctors } = useContext(AppContext)
 
-
-  const {doctors} = useContext(AppContext)
-
-  return (
-    <div>
-      <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>My Appointments</p>
-      <div>
-        {doctors.slice(0,3).map((item, index)=>(
-          <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b' key={index}>
+    return (
+        <div className='max-w-5xl mx-auto py-8 px-4 space-y-6'>
             <div>
-              <img className='w-32 bg-indigo-50' src={item.image} alt="" />
+                <h1 className='text-3xl font-extrabold text-slate-900 tracking-tight'>
+                    My <span className='gradient-text'>Appointments</span>
+                </h1>
+                <p className='text-slate-500 text-sm mt-1'>
+                    Track and manage your upcoming consultations and payments.
+                </p>
             </div>
-            <div className='flex-1 text-sm text-zinc-600'>
-              <p className='text-neutral-800 font-semibold'>{item.name}</p>
-              <p>{item.speciality}</p>
-              <p className='text-zinc-700 font-medium mt-1'>Address:</p>
-              <p className='text-xs'>{item.address.line1}</p>
-              <p className='text-xs'>{item.address.line2}</p>
-              <p className='text-xs mt-1'><span className='text-sm text-neutral-700 font-medium'>Date & Time:</span>25, May, 2025 | 5:30 PM</p>
+
+            <div className='space-y-4'>
+                {doctors.slice(0, 3).map((item, index) => (
+                    <div 
+                        key={index}
+                        className='bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-6'
+                    >
+                        {/* Doctor Info */}
+                        <div className='flex items-center gap-4 w-full sm:w-auto'>
+                            <div className='w-24 h-24 rounded-2xl bg-gradient-to-b from-blue-50 to-slate-100 p-2 flex-shrink-0 border border-slate-100'>
+                                <img className='w-full h-full object-cover object-top rounded-xl' src={item.image} alt={item.name} />
+                            </div>
+
+                            <div className='space-y-1 text-left'>
+                                <h3 className='text-lg font-bold text-slate-900'>{item.name}</h3>
+                                <span className='inline-block px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold'>
+                                    {item.speciality}
+                                </span>
+
+                                <div className='flex items-start gap-1 text-xs text-slate-500 pt-1'>
+                                    <MapPin className='w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0' />
+                                    <span>{item.address.line1}, {item.address.line2}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Date & Time Slot Details */}
+                        <div className='flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-4 sm:pt-0 border-t sm:border-t-0 border-slate-100 gap-3'>
+                            <div className='p-3 rounded-2xl bg-slate-50 border border-slate-100 text-left sm:text-right space-y-1'>
+                                <div className='flex items-center gap-1.5 text-xs text-slate-500 font-medium'>
+                                    <Calendar className='w-3.5 h-3.5 text-blue-600' />
+                                    <span>25 May 2025</span>
+                                    <Clock className='w-3.5 h-3.5 text-blue-600 ml-2' />
+                                    <span>05:30 PM</span>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className='flex items-center gap-2'>
+                                <button className='inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 hover:shadow-lg transition-all cursor-pointer'>
+                                    <CreditCard className='w-3.5 h-3.5' />
+                                    <span>Pay Online</span>
+                                </button>
+                                <button className='inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 text-xs font-bold transition-all cursor-pointer'>
+                                    <XCircle className='w-3.5 h-3.5' />
+                                    <span>Cancel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
-            <div></div>
-            <div className='flex flex-col gap-2 justify-end'>
-              <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-blue-500 hover:text-white transition-all duration-300 cursor-pointer'>Pay Online</button>
-              <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer'>Cancel Appointment</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default MyAppointments

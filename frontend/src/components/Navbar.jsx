@@ -1,68 +1,154 @@
 import React, { useState } from 'react'
-import {assets} from '../assets/assets'
+import { assets } from '../assets/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { User, Calendar, LogOut, Menu, X, ChevronDown, Sparkles } from 'lucide-react'
 
 const Navbar = () => {
-    
     const navigate = useNavigate();
-    const [showMenu, setShowMenu] = useState(false)
-    const [token, setToken] = useState(true)
+    const [showMenu, setShowMenu] = useState(false);
+    const [token, setToken] = useState(true);
 
-  return (
-    <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
-        <img onClick={()=>navigate('/')} className='w-44 cursor-pointer' src={assets.logo} alt="" />
-        <ul className='hidden md:flex items-start gap-5 font-medium'>
-            <NavLink to={'/'}>
-                <li className='py-1'>HOME</li>
-                <hr className='border-none outline-none h-0.5 bg-blue-500 w-3/5 m-auto hidden' />
-            </NavLink>
-            <NavLink to={'/doctors'}>
-                <li className='py-1'>ALL DOCTORS</li>
-                <hr className='border-none outline-none h-0.5 bg-blue-500 w-3/5 m-auto hidden' />
-            </NavLink>
-            <NavLink to={'/about'}>
-                <li className='py-1'>ABOUT</li>
-                <hr className='border-none outline-none h-0.5 bg-blue-500 w-3/5 m-auto hidden' />
-            </NavLink>
-            <NavLink to={'/contact'}>
-                <li className='py-1'>CONTACT</li>
-                <hr className='border-none outline-none h-0.5 bg-blue-500 w-3/5 m-auto hidden' />
-            </NavLink>
-        </ul>
-        <div className='flex item gap-4'>
-            {
-                token 
-                ?<div className='flex items-center gap-2 cursor-pointer group relative'>
-                    <img className='w-8 rounded-full' src={assets.profile_pic} alt="" />
-                    <img className='w-2.5' src={assets.dropdown_icon} alt="" />
-                    <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-                        <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
-                            <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
-                            <p onClick={()=>navigate('/my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
-                            <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
-                        </div>
-                    </div>
+    return (
+        <header className='sticky top-0 z-50 glass-nav transition-all duration-300 px-4 sm:px-[8%] py-3.5 mb-6'>
+            <div className='flex items-center justify-between max-w-7xl mx-auto'>
+                {/* Logo */}
+                <div onClick={() => navigate('/')} className='flex items-center gap-2 cursor-pointer group'>
+                    <img className='w-36 sm:w-44 transition-transform duration-300 group-hover:scale-105' src={assets.logo} alt="MedicoPlus Logo" />
                 </div>
-                :<button onClick={()=>navigate('/login')} className='bg-blue-500 text-white px-8 py-3 rounded-full font-light hidden md:block cursor-pointer'>Create account</button>
-            }
-            <img onClick={()=>setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
-            {/* ---- Mobile Menu ---- */}
-            <div className={`${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
-                <div className='flex items-center justify-between px-5 py-6'>
-                    <img className='w-36' src={assets.logo} alt="" />
-                    <img className='w-7' onClick={()=>setShowMenu(false)} src={assets.cross_icon} alt="" />
-                </div>
-                <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
-                    <NavLink onClick={()=>setShowMenu(false)} to='/'><p className='px-4 py-2 rounded inline-block'>HOME</p></NavLink>
-                    <NavLink onClick={()=>setShowMenu(false)} to='/doctors'><p className='px-4 py-2 rounded inline-block'>ALL DOCTORS</p></NavLink>
-                    <NavLink onClick={()=>setShowMenu(false)} to='/about'><p className='px-4 py-2 rounded inline-block'>ABOUT</p></NavLink>
-                    <NavLink onClick={()=>setShowMenu(false)} to='/contact'><p className='px-4 py-2 rounded inline-block'>CONTACT</p></NavLink>
+
+                {/* Desktop Navigation Links */}
+                <ul className='hidden md:flex items-center gap-8 font-medium text-sm text-slate-600'>
+                    <NavLink to={'/'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>HOME</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
+                    <NavLink to={'/doctors'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>ALL DOCTORS</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
+                    <NavLink to={'/about'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>ABOUT</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
+                    <NavLink to={'/contact'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>CONTACT</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
                 </ul>
+
+                {/* Action / Profile Menu */}
+                <div className='flex items-center gap-4'>
+                    {token ? (
+                        <div className='flex items-center gap-2 cursor-pointer group relative'>
+                            <div className='relative p-0.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-transform duration-300 group-hover:scale-105'>
+                                <img className='w-9 h-9 rounded-full object-cover border-2 border-white' src={assets.profile_pic} alt="Profile" />
+                            </div>
+                            <ChevronDown className='w-4 h-4 text-slate-500 transition-transform duration-300 group-hover:rotate-180' />
+
+                            {/* Dropdown Menu */}
+                            <div className='absolute top-full right-0 pt-3 text-sm font-medium text-slate-700 z-30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2'>
+                                <div className='w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-100 p-3 flex flex-col gap-1.5'>
+                                    <div className='px-3 py-2 border-b border-slate-100 mb-1'>
+                                        <p className='text-xs text-slate-400 font-normal'>Signed in as</p>
+                                        <p className='text-sm font-semibold text-slate-900 truncate'>Jane Doe</p>
+                                    </div>
+                                    <button onClick={() => navigate('/my-profile')} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-blue-50/70 transition-all text-left'>
+                                        <User className='w-4 h-4 text-blue-500' />
+                                        <span>My Profile</span>
+                                    </button>
+                                    <button onClick={() => navigate('/my-appointments')} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-blue-50/70 transition-all text-left'>
+                                        <Calendar className='w-4 h-4 text-blue-500' />
+                                        <span>My Appointments</span>
+                                    </button>
+                                    <div className='h-px bg-slate-100 my-1'></div>
+                                    <button onClick={() => setToken(false)} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-rose-600 hover:bg-rose-50 transition-all text-left'>
+                                        <LogOut className='w-4 h-4 text-rose-500' />
+                                        <span>Logout</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <button 
+                            onClick={() => navigate('/login')} 
+                            className='relative inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/35 hover:scale-105 active:scale-95 cursor-pointer'
+                        >
+                            <Sparkles className='w-4 h-4 text-cyan-200 animate-pulse' />
+                            <span>Create account</span>
+                        </button>
+                    )}
+
+                    {/* Mobile Menu Button */}
+                    <button 
+                        onClick={() => setShowMenu(true)}
+                        className='md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors'
+                        aria-label="Toggle menu"
+                    >
+                        <Menu className='w-6 h-6' />
+                    </button>
+                </div>
             </div>
-        
-        </div>
-    </div>
-  )
+
+            {/* Mobile Menu Overlay Drawer */}
+            <div className={`fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300 md:hidden ${showMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                <div className={`fixed right-0 top-0 bottom-0 w-3/4 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out flex flex-col p-6 ${showMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+                    <div className='flex items-center justify-between border-b border-slate-100 pb-4 mb-6'>
+                        <img className='w-36' src={assets.logo} alt="Logo" />
+                        <button onClick={() => setShowMenu(false)} className='p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100'>
+                            <X className='w-6 h-6' />
+                        </button>
+                    </div>
+
+                    <nav className='flex flex-col gap-3 font-medium text-slate-700'>
+                        <NavLink onClick={() => setShowMenu(false)} to='/' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            HOME
+                        </NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/doctors' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            ALL DOCTORS
+                        </NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/about' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            ABOUT
+                        </NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/contact' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            CONTACT
+                        </NavLink>
+                    </nav>
+
+                    {!token && (
+                        <div className='mt-auto pt-6 border-t border-slate-100'>
+                            <button onClick={() => { navigate('/login'); setShowMenu(false); }} className='w-full py-3 text-center text-white bg-blue-600 font-medium rounded-xl shadow-lg shadow-blue-500/25'>
+                                Get Started
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </header>
+    )
 }
 
 export default Navbar
