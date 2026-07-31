@@ -1,7 +1,6 @@
 import React from 'react'
-import { assets } from '../assets/assets'
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin, Heart, Shield, Send } from 'lucide-react'
+import { Phone, Mail, MapPin, Heart, Shield, Send, Activity } from 'lucide-react'
 
 const Footer = () => {
     return (
@@ -12,7 +11,15 @@ const Footer = () => {
                     
                     {/* Brand Info */}
                     <div className='md:col-span-1.5 flex flex-col gap-4'>
-                        <img className='w-40 brightness-200 invert-0' src={assets.logo} alt="MedicoPlus Logo" />
+                        <div className='flex items-center gap-2.5 cursor-pointer'>
+                            <div className='w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25'>
+                                <Activity className='w-5 h-5 text-white animate-pulse' />
+                            </div>
+                            <span className='text-2xl font-black tracking-tight text-white'>
+                                Medico<span className='gradient-text'>Plus</span>
+                            </span>
+                        </div>
+
                         <p className='text-slate-400 text-xs sm:text-sm leading-relaxed max-w-sm'>
                             MedicoPlus is your trusted digital healthcare companion. Book certified doctor appointments online, access medical profiles, and manage your health seamlessly.
                         </p>

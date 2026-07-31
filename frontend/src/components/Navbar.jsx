@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { User, Calendar, LogOut, Menu, X, ChevronDown, Sparkles } from 'lucide-react'
+import { User, Calendar, LogOut, Menu, X, ChevronDown, Sparkles, Activity } from 'lucide-react'
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -11,9 +11,15 @@ const Navbar = () => {
     return (
         <header className='sticky top-0 z-50 glass-nav transition-all duration-300 px-4 sm:px-[8%] py-3.5 mb-6'>
             <div className='flex items-center justify-between max-w-7xl mx-auto'>
-                {/* Logo */}
-                <div onClick={() => navigate('/')} className='flex items-center gap-2 cursor-pointer group'>
-                    <img className='w-36 sm:w-44 transition-transform duration-300 group-hover:scale-105' src={assets.logo} alt="MedicoPlus Logo" />
+                
+                {/* Brand Text Logo */}
+                <div onClick={() => navigate('/')} className='flex items-center gap-2.5 cursor-pointer group'>
+                    <div className='w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 group-hover:scale-105 group-hover:shadow-lg transition-all duration-300'>
+                        <Activity className='w-5 h-5 sm:w-6 sm:h-6 text-white animate-pulse' />
+                    </div>
+                    <span className='text-2xl sm:text-3xl font-black tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors duration-300'>
+                        Medico<span className='gradient-text'>Plus</span>
+                    </span>
                 </div>
 
                 {/* Desktop Navigation Links */}
@@ -117,7 +123,14 @@ const Navbar = () => {
             <div className={`fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300 md:hidden ${showMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
                 <div className={`fixed right-0 top-0 bottom-0 w-3/4 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out flex flex-col p-6 ${showMenu ? 'translate-x-0' : 'translate-x-full'}`}>
                     <div className='flex items-center justify-between border-b border-slate-100 pb-4 mb-6'>
-                        <img className='w-36' src={assets.logo} alt="Logo" />
+                        <div onClick={() => { navigate('/'); setShowMenu(false); }} className='flex items-center gap-2 cursor-pointer'>
+                            <div className='w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20'>
+                                <Activity className='w-4 h-4 text-white animate-pulse' />
+                            </div>
+                            <span className='text-xl font-black tracking-tight text-slate-900'>
+                                Medico<span className='gradient-text'>Plus</span>
+                            </span>
+                        </div>
                         <button onClick={() => setShowMenu(false)} className='p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100'>
                             <X className='w-6 h-6' />
                         </button>
