@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { ArrowRight, Calendar, Star, ShieldCheck, Award } from 'lucide-react'
 
 const Header = () => {
+    const navigate = useNavigate()
     return (
         <div className='relative overflow-hidden rounded-3xl gradient-hero shadow-2xl text-white my-4 p-8 sm:p-12 lg:p-16'>
             {/* Ambient Background Glow Orbs */}
@@ -44,14 +46,14 @@ const Header = () => {
 
                     {/* Primary CTA Button */}
                     <div className='flex flex-wrap items-center gap-4 pt-2'>
-                        <a 
-                            href="#speciality" 
+                        <button 
+                            onClick={() => navigate('/doctors')} 
                             className='inline-flex items-center gap-3 px-8 py-4 bg-white text-blue-700 font-semibold text-sm sm:text-base rounded-full shadow-lg shadow-black/10 hover:shadow-xl hover:bg-slate-50 hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer'
                         >
                             <Calendar className='w-5 h-5 text-blue-600' />
                             <span>Book Appointment</span>
                             <ArrowRight className='w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-1' />
-                        </a>
+                        </button>
                     </div>
                 </div>
 

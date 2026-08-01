@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { assets } from '../assets/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { User, Calendar, LogOut, Menu, X, ChevronDown, Sparkles, Activity } from 'lucide-react'
+import { AppContext } from '../context/AppContext'
+import LanguageSelector from './LanguageSelector'
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
-    const [token, setToken] = useState(true);
+    const { token, userData, logout } = useContext(AppContext);
 
     return (
         <header className='sticky top-0 z-50 glass-nav transition-all duration-300 px-4 sm:px-[8%] py-3.5 mb-6'>
@@ -44,10 +46,30 @@ const Navbar = () => {
                             </>
                         )}
                     </NavLink>
-                    <NavLink to={'/about'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                    <NavLink to={'/how-it-works'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
                         {({ isActive }) => (
                             <>
-                                <span>ABOUT</span>
+                                <span>HOW IT WORKS</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
+                    <NavLink to={'/health-card'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>HEALTH CARD</span>
+                                {isActive && (
+                                    <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
+                                )}
+                            </>
+                        )}
+                    </NavLink>
+                    <NavLink to={'/pricing'} className={({ isActive }) => `relative py-1.5 transition-colors duration-200 hover:text-blue-600 ${isActive ? 'text-blue-600 font-semibold' : ''}`}>
+                        {({ isActive }) => (
+                            <>
+                                <span>PRICING</span>
                                 {isActive && (
                                     <span className='absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full animate-pulse-glow'></span>
                                 )}
@@ -68,10 +90,19 @@ const Navbar = () => {
 
                 {/* Action / Profile Menu */}
                 <div className='flex items-center gap-4'>
+                    {/* Language Selector */}
+                    <div className='hidden sm:block'>
+                        <LanguageSelector />
+                    </div>
+
                     {token ? (
                         <div className='flex items-center gap-2 cursor-pointer group relative'>
                             <div className='relative p-0.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-transform duration-300 group-hover:scale-105'>
-                                <img className='w-9 h-9 rounded-full object-cover border-2 border-white' src={assets.profile_pic} alt="Profile" />
+                                <img 
+                                    className='w-9 h-9 rounded-full object-cover border-2 border-white' 
+                                    src={userData?.image || assets.profile_pic} 
+                                    alt={userData?.name || "Profile"} 
+                                />
                             </div>
                             <ChevronDown className='w-4 h-4 text-slate-500 transition-transform duration-300 group-hover:rotate-180' />
 
@@ -80,7 +111,8 @@ const Navbar = () => {
                                 <div className='w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-100 p-3 flex flex-col gap-1.5'>
                                     <div className='px-3 py-2 border-b border-slate-100 mb-1'>
                                         <p className='text-xs text-slate-400 font-normal'>Signed in as</p>
-                                        <p className='text-sm font-semibold text-slate-900 truncate'>Jane Doe</p>
+                                        <p className='text-sm font-semibold text-slate-900 truncate'>{userData?.name || 'User'}</p>
+                                        <p className='text-xs text-slate-400 truncate'>{userData?.email || ''}</p>
                                     </div>
                                     <button onClick={() => navigate('/my-profile')} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-blue-50/70 transition-all text-left'>
                                         <User className='w-4 h-4 text-blue-500' />
@@ -90,8 +122,12 @@ const Navbar = () => {
                                         <Calendar className='w-4 h-4 text-blue-500' />
                                         <span>My Appointments</span>
                                     </button>
+                                    <button onClick={() => navigate('/subscription')} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-blue-50/70 transition-all text-left'>
+                                        <Sparkles className='w-4 h-4 text-blue-500' />
+                                        <span>Subscription</span>
+                                    </button>
                                     <div className='h-px bg-slate-100 my-1'></div>
-                                    <button onClick={() => setToken(false)} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-rose-600 hover:bg-rose-50 transition-all text-left'>
+                                    <button onClick={logout} className='flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-rose-600 hover:bg-rose-50 transition-all text-left'>
                                         <LogOut className='w-4 h-4 text-rose-500' />
                                         <span>Logout</span>
                                     </button>
@@ -136,6 +172,10 @@ const Navbar = () => {
                         </button>
                     </div>
 
+                    <div className="mb-4">
+                        <LanguageSelector />
+                    </div>
+
                     <nav className='flex flex-col gap-3 font-medium text-slate-700'>
                         <NavLink onClick={() => setShowMenu(false)} to='/' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
                             HOME
@@ -143,8 +183,14 @@ const Navbar = () => {
                         <NavLink onClick={() => setShowMenu(false)} to='/doctors' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
                             ALL DOCTORS
                         </NavLink>
-                        <NavLink onClick={() => setShowMenu(false)} to='/about' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
-                            ABOUT
+                        <NavLink onClick={() => setShowMenu(false)} to='/how-it-works' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            HOW IT WORKS
+                        </NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/health-card' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            HEALTH CARD
+                        </NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/pricing' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
+                            PRICING
                         </NavLink>
                         <NavLink onClick={() => setShowMenu(false)} to='/contact' className={({ isActive }) => `px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'hover:bg-slate-50'}`}>
                             CONTACT
@@ -153,7 +199,10 @@ const Navbar = () => {
 
                     {!token && (
                         <div className='mt-auto pt-6 border-t border-slate-100'>
-                            <button onClick={() => { navigate('/login'); setShowMenu(false); }} className='w-full py-3 text-center text-white bg-blue-600 font-medium rounded-xl shadow-lg shadow-blue-500/25'>
+                            <button 
+                                onClick={() => { navigate('/login'); setShowMenu(false); }} 
+                                className='w-full py-3 text-center text-white bg-gradient-to-r from-blue-600 to-indigo-600 font-medium rounded-xl shadow-lg shadow-blue-500/25'
+                            >
                                 Get Started
                             </button>
                         </div>

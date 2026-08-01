@@ -18,17 +18,24 @@ const Login = () => {
     try {
       
       if (state === 'Admin') {
-
         const {data} = await axios.post(backendUrl + '/api/admin/login',{email,password})
         if (data.success){
           localStorage.setItem('aToken', data.token)
           setAToken(data.token)
+          toast.success('Admin login successful')
         }else{
           toast.error(data.message)
         }
-
-      }else{
-
+      } else {
+        // Doctor login via admin panel
+        const {data} = await axios.post(backendUrl + '/api/doctor/login',{email,password})
+        if (data.success){
+          localStorage.setItem('dToken', data.token)
+          setAToken(data.token)
+          toast.success('Doctor login successful')
+        }else{
+          toast.error(data.message)
+        }
       }
 
     } catch (error) {

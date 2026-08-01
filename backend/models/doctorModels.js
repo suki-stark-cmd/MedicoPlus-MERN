@@ -10,6 +10,15 @@ const doctorScema = new mongoose.Schema({
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },
+    // Extended fields for doctor portal
+    languagesSpoken: { type: [String], default: ['en'] },
+    verificationStatus: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
+    ratings: { 
+        average: { type: Number, default: 0 }, 
+        count: { type: Number, default: 0 } 
+    },
+    slots: { type: Object, default: {} },
+
     available: { type: Boolean, default: true },
     fees: { type: Number, required: true },
     address: { type: Object, required: true },

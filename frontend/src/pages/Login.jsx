@@ -1,16 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { User, Mail, Lock, Sparkles, ArrowRight } from 'lucide-react'
+import { AppContext } from '../context/AppContext'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const Login = () => {
     const [state, setState] = useState('Sign Up')
-
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
+    
+    const { backendUrl, setToken } = useContext(AppContext)
 
     const onSubmitHandler = async (event) => {
         event.preventDefault()
-        // Form submit logic
+        
+        if (state === 'Sign Up') {
+            // Register user
+            try {
+                const { data } = await axios.post(`${backendUrl}/api/user/register`, {
+                    name, email, password
+                })
+                if (data.success) {
+                    localStorage.setItem('token', data.token)
+                    setToken(data.token)
+                    toast.success(data.message || 'Account created successfully')
+                } else {
+                    toast.error(data.message || 'Signup failed')
+                }
+            } catch (error) {
+                toast.error(error.response?.data?.message || error.message)
+            }
+        } else {
+            // Login user
+            try {
+                const { data } = await axios.post(`${backendUrl}/api/user/login`, {
+                    email, password
+                })
+                if (data.success) {
+                    localStorage.setItem('token', data.token)
+                    setToken(data.token)
+                    toast.success('Login successful')
+                } else {
+                    toast.error(data.message || 'Login failed')
+                }
+            } catch (error) {
+                toast.error(error.response?.data?.message || error.message)
+            }
+        }
     }
 
     return (
