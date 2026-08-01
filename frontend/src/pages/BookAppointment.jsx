@@ -5,7 +5,7 @@ import { assets } from '../assets/assets'
 import { CheckCircle2, ShieldCheck, Award, Info, Calendar, Clock, Star, ArrowRight } from 'lucide-react'
 import RelatedDoctors from '../components/RelatedDoctors'
 
-const Appointment = () => {
+const BookAppointment = () => {
     const { docId } = useParams()
     const { doctors, currencySymbol } = useContext(AppContext)
     const navigate = useNavigate()
@@ -166,7 +166,7 @@ const Appointment = () => {
                 {/* Days Horizontal Carousel */}
                 <div className='flex gap-3 items-center w-full overflow-x-auto pb-2 scrollbar-hide'>
                     {docSlots.length > 0 && docSlots.map((item, index) => (
-                        <div 
+                        <div
                             key={index}
                             onClick={() => setSlotIndex(index)} 
                             className={`flex flex-col items-center justify-center py-4 min-w-20 rounded-2xl cursor-pointer transition-all duration-300 ${slotIndex === index ? 'bg-gradient-to-b from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 scale-105' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'}`}
@@ -239,4 +239,4 @@ const Appointment = () => {
     )
 }
 
-export default Appointment
+export default BookAppointment
